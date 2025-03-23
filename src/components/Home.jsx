@@ -27,21 +27,21 @@ function Home() {
   };
 
   return (
-    <div className="relative h-screen flex items-center justify-center text-white text-center">
+    <div className="relative min-h-screen h-auto flex items-center justify-center text-white text-center">
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: "url('/public/bgimg.jpg')",
+          backgroundImage: "url('/bgimg.jpg')",
         }}
       ></div>
 
       <div className="relative z-10">
-        <h1 className="text-5xl font-bold mb-6">
+        <h1 className="text-2xl font-bold mb-6 sm:text-5xl">
           Welcome to our Task Management App!
         </h1>
-        {quotes.map((obj , i) => {
+        {quotes.map((obj, i) => {
           return (
-            <p key={i} className="text-xl mb-8 px-10">
+            <p key={i} className="text-2 mb-8 px-10 sm:text-xl">
               {obj.text} – {obj.author}
             </p>
           );

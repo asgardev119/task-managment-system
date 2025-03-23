@@ -76,9 +76,8 @@ const Dashboard = () => {
     setTaskForm(task);
     setShowPopup(true);
   };
-  
-  localStorage.setItem("tasks", JSON.stringify(tasks))
 
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("tasks");
@@ -92,7 +91,7 @@ const Dashboard = () => {
     <div
       className="min-h-screen p-8 relative"
       style={{
-        backgroundImage: "url('/public/bgimg.jpg')",
+        backgroundImage: "url('/bgimg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -192,16 +191,16 @@ const Dashboard = () => {
       )}
 
       {/* Task Sections */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="flex gap-6 justify-center flex-wrap">
         {["yetToStart", "inProgress", "completed"].map((status) => (
           <div
             key={status}
-            className="bg-sky-500/10 p-4 rounded-md shadow-md border border-amber-50 "
+            className="bg-sky-500/10 w-full sm:w-1/4 p-4 rounded-md shadow-md border border-amber-50 "
           >
-            <h2 className="text-xl text-center font-semibold capitalize mb-4 text-amber-50">
+            <h2 className=" text-sm sm:text-xl text-center font-semibold capitalize mb-4 text-amber-50">
               {status.replace(/([A-Z])/g, " $1")}
             </h2>
-            <ul>
+            <ul className="text-white">
               {filterTasksByStatus(status).map((task) => (
                 <li
                   key={task.id}

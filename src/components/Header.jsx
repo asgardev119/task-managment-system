@@ -17,15 +17,17 @@ export const Header = ({ onClick }) => {
   };
 
   return (
-    <header className="w-full bg-sky-500/10 text-white p-2 m-auto flex justify-between items-center border rounded-2xl mb-1.5">
-      <div className="text-xl font-bold">
-        <span>Hi {parsedUser ? parsedUser.name : "Guest"}</span>
+    <header className="w-full  bg-sky-500/10 text-white p-2 m-auto flex justify-between items-center border rounded-2xl mb-1.5">
+      <div className="text-2 sm:text-xl font-bold">
+        <span className=" text-xs sm:text-xl">
+          Hi {parsedUser ? parsedUser.name : "Guest"}
+        </span>
       </div>
 
       <button
         onClick={onClick}
-        className="cursor-pointer mr-4 border px-4 py-2 bg-slate-200 text-black font-semibold 
-          text-lg rounded-2xl shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
+        className="cursor-pointer px-1 py-1 mr-4 border sm:px-2 sm:py-2 bg-slate-200 text-black font-semibold 
+text-xs sm:text-sm rounded-sm shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
       >
         Add your Task
       </button>
@@ -33,14 +35,16 @@ export const Header = ({ onClick }) => {
       {parsedUser ? (
         <button
           onClick={handleLogout}
-          className="cursor-pointer px-4 py-2 bg-white hover:bg-red-700 text-black rounded-md font-semibold border"
+          className="cursor-pointer px-1 py-1 mr-4 border sm:px-2 sm:py-2 bg-slate-200 text-black font-semibold 
+          text-xs sm:text-sm rounded-sm shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
         >
           Logout
         </button>
       ) : (
         <button
           onClick={handleLogin}
-          className="cursor-pointer px-4 py-2 bg-white hover:bg-red-700 text-black rounded-md font-semibold border"
+          className="cursor-pointer px-1 py-1 mr-4 border sm:px-2 sm:py-2 bg-slate-200 text-black font-semibold 
+          text-xs sm:text-sm rounded-sm shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
         >
           Login
         </button>

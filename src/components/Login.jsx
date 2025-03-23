@@ -64,7 +64,7 @@ function Login() {
     <div
       className="min-h-screen p-8 relative flex items-center justify-center "
       style={{
-        backgroundImage: "url('/public/bgimg.jpg')",
+        backgroundImage: "url('/bgimg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
