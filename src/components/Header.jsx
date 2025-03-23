@@ -17,25 +17,25 @@ export const Header = ({ onClick }) => {
   };
 
   return (
-    <header className="w-full  bg-sky-500/10 text-white p-2 m-auto flex justify-between items-center border rounded-2xl mb-1.5">
-      <div className="text-2 sm:text-xl font-bold">
-        <span className=" text-xs sm:text-xl">
+    <header className="w-full bg-sky-500/10 text-white p-4 m-auto flex justify-between items-center border rounded-2xl mb-1.5">
+      <div className="">
+        <span className=" text-sm sm:text-xl font-bold">
           Hi {parsedUser ? parsedUser.name : "Guest"}
         </span>
       </div>
 
       <button
         onClick={onClick}
-        className="cursor-pointer px-1 py-1 mr-4 border sm:px-2 sm:py-2 bg-slate-200 text-black font-semibold 
-text-xs sm:text-sm rounded-sm shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
+        className="cursor-pointer  px-2 py-2  mr-4 border sm:px-2 sm:py-2 bg-slate-200 text-black font-semibold 
+        text-xs sm:text-sm rounded-sm shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
       >
-        Add your Task
+        Add a task
       </button>
 
       {parsedUser ? (
         <button
           onClick={handleLogout}
-          className="cursor-pointer px-1 py-1 mr-4 border sm:px-2 sm:py-2 bg-slate-200 text-black font-semibold 
+          className="cursor-pointer px-2 py-2 mr-4 border sm:px-4 sm:py-2 bg-slate-200 text-black font-semibold 
           text-xs sm:text-sm rounded-sm shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
         >
           Logout
@@ -43,7 +43,7 @@ text-xs sm:text-sm rounded-sm shadow-lg hover:bg-black hover:text-white transiti
       ) : (
         <button
           onClick={handleLogin}
-          className="cursor-pointer px-1 py-1 mr-4 border sm:px-2 sm:py-2 bg-slate-200 text-black font-semibold 
+          className="cursor-pointer  px-2 py-2  mr-4 border sm:px-2 sm:py-2 bg-slate-200 text-black font-semibold 
           text-xs sm:text-sm rounded-sm shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
         >
           Login
