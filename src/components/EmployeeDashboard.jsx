@@ -7,7 +7,6 @@ export const EmployeeDashboard = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [currentTask, setCurrentTask] = useState(null);
 
-  // Get priority color
   const getPriorityBgColor = (priority) => {
     switch (priority) {
       case "low": return "bg-green-500/50";
@@ -17,7 +16,6 @@ export const EmployeeDashboard = () => {
     }
   };
 
-  // Handle status update
   const handleStatusUpdate = (taskId, newStatus) => {
     const teamTasks = JSON.parse(localStorage.getItem("teamTasks")) || [];
     const updatedTasks = teamTasks.map(task => 
@@ -27,24 +25,16 @@ export const EmployeeDashboard = () => {
     setTasks(updatedTasks);
     setShowPopup(false);
   };
+
   useEffect(() => {
-    const loadTasks = () => {
-      const currentUser = JSON.parse(localStorage.getItem("userLoggedIn"));
-      const teamTasks = JSON.parse(localStorage.getItem("teamTasks")) || [];
-      
-      // Show tasks specifically assigned to this employee
-      
-      const assignedTasks = teamTasks.filter(task => 
-        task.assignedTo === currentUser.email || 
-        task.assignedTo === 'all'
-      );
-      
-      setTasks(assignedTasks);
-    };
-  
-    loadTasks();
-    const interval = setInterval(loadTasks, 5000);
-    return () => clearInterval(interval);
+    const currentUser = JSON.parse(localStorage.getItem("userLoggedIn"));
+    const allTasks = JSON.parse(localStorage.getItem("teamTasks")) || [];
+    const assignedTasks = allTasks.filter(
+      (task) =>
+        task.assignedTo === currentUser.email ||
+        task.assignedTo === "all"
+    );
+    setTasks(assignedTasks);
   }, []);
 
   return (
@@ -60,8 +50,7 @@ export const EmployeeDashboard = () => {
       <h1 className="text-2xl font-bold text-center mb-6 text-white">
         Your Tasks
       </h1>
-
-      {/* Status Update Popup */}
+      
       {showPopup && currentTask && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -98,6 +87,7 @@ export const EmployeeDashboard = () => {
       )}
 
       {/* Task Columns */}
+      
       <div className="flex gap-6 justify-center flex-wrap">
         {["yetToStart", "inProgress", "completed"].map((status) => (
           <div key={status} className="bg-sky-500/10 w-full sm:w-1/4 p-4 rounded-md shadow-md border border-amber-50">

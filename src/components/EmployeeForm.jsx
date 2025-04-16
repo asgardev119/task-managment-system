@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
-export const EmployeeForm = ({ onClose, onAddEmployee }) => {
+const EmployeeForm = ({ onAddEmployee, onClose }) => {
   const [employee, setEmployee] = useState({
     name: "",
     email: "",
     password: "",
-    role: "employee",
   });
 
   const handleInputChange = (e) => {
@@ -18,78 +17,80 @@ export const EmployeeForm = ({ onClose, onAddEmployee }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddEmployee(employee);
-    onClose();
+    if (!employee.name || !employee.email || !employee.password) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    onAddEmployee(employee); // Call parent function
+    setEmployee({ name: "", email: "", password: "" }); // Reset form
+    onClose(); // Close popup
   };
 
   return (
-    <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-semibold mb-4">Add Employee</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6 rounded-lg shadow-md w-3/4 sm:w-1/2">
+        <h3 className="text-xl font-semibold mb-4">Add New Employee</h3>
+
         <form onSubmit={handleSubmit}>
+          {/* Name */}
           <div className="mb-4">
-            <label className="block text-sm font-semibold">Name</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
             <input
               type="text"
               name="name"
               value={employee.name}
               onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full"
               required
             />
           </div>
 
+          {/* Email */}
           <div className="mb-4">
-            <label className="block text-sm font-semibold">Email</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
             <input
               type="email"
               name="email"
               value={employee.email}
               onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full"
               required
             />
           </div>
 
+          {/* Password */}
           <div className="mb-4">
-            <label className="block text-sm font-semibold">Password</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
             <input
               type="password"
               name="password"
               value={employee.password}
               onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="mt-1 px-4 py-2 border border-gray-300 rounded-md w-full"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-semibold">Role</label>
-            <select
-              name="role"
-              value={employee.role}
-              onChange={handleInputChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
-              required
+          <div className="flex justify-between">
+            <button
+              type="submit"
+              className="text-white bg-blue-600 px-4 py-2 rounded-md"
             >
-              <option value="employee">Employee</option>
-              <option value="lead">Lead</option>
-            </select>
-          </div>
-
-          <div className="flex justify-end">
+              Add Employee
+            </button>
             <button
               type="button"
               onClick={onClose}
-              className="cursor-pointer mr-2 px-4 py-2 bg-gray-300 text-black rounded-md"
+              className="text-white bg-red-600 px-4 py-2 rounded-md"
             >
               Close
-            </button>
-            <button
-              type="submit"
-              className="cursor-pointer px-4 py-2 bg-black text-white rounded-md"
-            >
-              Add Employee
             </button>
           </div>
         </form>
@@ -97,3 +98,5 @@ export const EmployeeForm = ({ onClose, onAddEmployee }) => {
     </div>
   );
 };
+
+export default EmployeeForm;

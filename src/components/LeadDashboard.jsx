@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Header } from "./Header";
 import { TaskForm } from "./TaskForm";
-import { EmployeeForm } from "./EmployeeForm";
 import { TaskColumn } from "./TaskColumn";
+import EmployeeForm from "./EmployeeForm";
+import EmployeePopup from "./EmployeePopup";
 
 const LeadDashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [showTaskPopup, setShowTaskPopup] = useState(false);
   const [showEmployeePopup, setShowEmployeePopup] = useState(false);
+  const [showEmployeeListPopup, setShowEmployeeListPopup] = useState(false);
 
   const [taskForm, setTaskForm] = useState({
     title: "",
     description: "",
     status: "yetToStart",
     priority: "low",
+    assignedTo: "all",
     id: null,
   });
 
@@ -37,94 +40,38 @@ const LeadDashboard = () => {
       [name]: value,
     });
   };
-  // const handleTaskSubmit = (e) => {
-  //   e.preventDefault();
-    
-  //   // Get current lead's info
-  //   const currentUser = JSON.parse(localStorage.getItem("userLoggedIn"));
-    
-  //   const newTask = {
-  //     ...taskForm,
-  //     id: Date.now(),
-  //     createdBy: currentUser.email, // Store who created the task
-  //     createdAt: new Date().toISOString(),
-  //     assignedTo: "all" // or specific employee emails
-  //   };
-  
-  //   // Get existing team tasks
-  //   const teamTasks = JSON.parse(localStorage.getItem("teamTasks")) || [];
-    
-  //   if (taskForm.id) {
-  //     // Update existing task
-  //     const updatedTasks = teamTasks.map(task => 
-  //       task.id === taskForm.id ? newTask : task
-  //     );
-  //     localStorage.setItem("teamTasks", JSON.stringify(updatedTasks));
-  //     setTasks(updatedTasks);
-  //   } else {
-  //     // Add new task
-  //     const updatedTasks = [...teamTasks, newTask];
-  //     localStorage.setItem("teamTasks", JSON.stringify(updatedTasks));
-  //     setTasks(updatedTasks);
-  //   }
-  
-  //   setShowTaskPopup(false);
-  //   resetForm();
-  // };
-  
-  // And update the useEffect to load from teamTasks
-// In your LeadDashboard component, update the useEffect and task handling:
 
-useEffect(() => {
-  // Load tasks from teamTasks when component mounts
-  const loadTasks = () => {
-    const teamTasks = JSON.parse(localStorage.getItem("teamTasks")) || [];
-    // Filter tasks created by current user
+  const handleTaskSubmit = (e) => {
+    e.preventDefault();
+
     const currentUser = JSON.parse(localStorage.getItem("userLoggedIn"));
-    const userTasks = teamTasks.filter(task => task.createdBy === currentUser.email);
-    setTasks(userTasks);
-  };
 
-  loadTasks();
-  
-  // Optional: Refresh every 5 seconds
-  const interval = setInterval(loadTasks, 5000);
-  return () => clearInterval(interval);
-}, []);
+    const newTask = {
+      ...taskForm,
+      id: taskForm.id || Date.now(),
+      createdBy: currentUser.email,
+      createdAt: new Date().toISOString(),
+      assignedTo: taskForm.assignedTo || "all",
+    };
 
-// Update handleTaskSubmit to ensure createdBy is set
-const handleTaskSubmit = (e) => {
-  e.preventDefault();
-  
-  const currentUser = JSON.parse(localStorage.getItem("userLoggedIn"));
-  
-  const newTask = {
-    ...taskForm,
-    id: Date.now(),
-    createdBy: currentUser.email, // Make sure this is set
-    createdAt: new Date().toISOString()
-  };
+    const teamTasks = JSON.parse(localStorage.getItem("teamTasks")) || [];
 
-  const teamTasks = JSON.parse(localStorage.getItem("teamTasks")) || [];
-  
-  if (taskForm.id) {
-    // Update existing task
-    const updatedTasks = teamTasks.map(task => 
-      task.id === taskForm.id ? newTask : task
+    let updatedTasks;
+    if (taskForm.id) {
+      updatedTasks = teamTasks.map((task) =>
+        task.id === taskForm.id ? newTask : task
+      );
+    } else {
+      updatedTasks = [...teamTasks, newTask];
+    }
+
+    localStorage.setItem("teamTasks", JSON.stringify(updatedTasks));
+    setTasks(
+      updatedTasks.filter((task) => task.createdBy === currentUser.email)
     );
-    localStorage.setItem("teamTasks", JSON.stringify(updatedTasks));
-    setTasks(updatedTasks.filter(task => task.createdBy === currentUser.email));
-  } else {
-    // Add new task
-    const updatedTasks = [...teamTasks, newTask];
-    localStorage.setItem("teamTasks", JSON.stringify(updatedTasks));
-    setTasks(updatedTasks.filter(task => task.createdBy === currentUser.email));
-  }
-
-  setShowTaskPopup(false);
-  resetForm();
-};
-
+    setShowTaskPopup(false);
+    resetForm();
+  };
 
   const handleCloseTaskPopup = () => {
     setShowTaskPopup(false);
@@ -137,6 +84,7 @@ const handleTaskSubmit = (e) => {
       description: "",
       status: "yetToStart",
       priority: "low",
+      assignedTo: "all",
       id: null,
     });
   };
@@ -145,7 +93,14 @@ const handleTaskSubmit = (e) => {
     tasks.filter((task) => task.status === status);
 
   const handleDelete = (taskId) => {
-    setTasks(tasks.filter((task) => task.id !== taskId));
+    const teamTasks = JSON.parse(localStorage.getItem("teamTasks")) || [];
+    const updatedTasks = teamTasks.filter((task) => task.id !== taskId);
+    localStorage.setItem("teamTasks", JSON.stringify(updatedTasks));
+
+    const currentUser = JSON.parse(localStorage.getItem("userLoggedIn"));
+    setTasks(
+      updatedTasks.filter((task) => task.createdBy === currentUser.email)
+    );
   };
 
   const handleEdit = (task) => {
@@ -154,11 +109,9 @@ const handleTaskSubmit = (e) => {
   };
 
   const handleAddEmployee = (employee) => {
-    // Save employee credentials
     const employees = JSON.parse(localStorage.getItem("employees")) || [];
     localStorage.setItem("employees", JSON.stringify([...employees, employee]));
-    
-    // Create default task for new employee
+
     const teamTasks = JSON.parse(localStorage.getItem("teamTasks")) || [];
     const welcomeTask = {
       id: Date.now(),
@@ -168,21 +121,29 @@ const handleTaskSubmit = (e) => {
       priority: "medium",
       createdBy: JSON.parse(localStorage.getItem("userLoggedIn")).email,
       assignedTo: employee.email,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
-    
-    localStorage.setItem("teamTasks", JSON.stringify([...teamTasks, welcomeTask]));
+
+    localStorage.setItem(
+      "teamTasks",
+      JSON.stringify([...teamTasks, welcomeTask])
+    );
     alert(`${employee.name} added successfully with a welcome task!`);
   };
 
   useEffect(() => {
-    // Load tasks
-    const savedTasks = localStorage.getItem("tasks");
-    if (savedTasks) {
-      setTasks(JSON.parse(savedTasks));
-    } else {
-      setTasks([]);
-    }
+    const loadTasks = () => {
+      const teamTasks = JSON.parse(localStorage.getItem("teamTasks")) || [];
+      const currentUser = JSON.parse(localStorage.getItem("userLoggedIn"));
+      const userTasks = teamTasks.filter(
+        (task) => task.createdBy === currentUser.email
+      );
+      setTasks(userTasks);
+    };
+
+    loadTasks();
+    const interval = setInterval(loadTasks, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -211,7 +172,19 @@ const handleTaskSubmit = (e) => {
         >
           Add Your Employee
         </button>
+
+        <button
+          onClick={() => setShowEmployeeListPopup(true)}
+          className="cursor-pointer px-2 py-2 border sm:px-2 sm:py-2 bg-slate-200 text-black font-semibold 
+  text-xs sm:text-sm rounded-sm shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
+        >
+          See Your Employees
+        </button>
       </div>
+
+      {showEmployeeListPopup && (
+        <EmployeePopup onClose={() => setShowEmployeeListPopup(false)} />
+      )}
 
       {showTaskPopup && (
         <TaskForm
@@ -229,7 +202,6 @@ const handleTaskSubmit = (e) => {
         />
       )}
 
-      {/* Task Sections */}
       <div className="flex gap-6 justify-center flex-wrap">
         {["yetToStart", "inProgress", "completed"].map((status) => (
           <TaskColumn
