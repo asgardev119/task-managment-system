@@ -21,10 +21,7 @@ function Home() {
     // Navigate to login page
     navigate("/login");
   };
-  const handleDashboard = () => {
-    // Navigate to login page
-    navigate("/dashboard");
-  };
+ 
 
   return (
     <div className="relative min-h-screen h-auto flex items-center justify-center text-white text-center">
@@ -53,13 +50,6 @@ function Home() {
           text-lg rounded-full shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
         >
           Join Now
-        </button>
-        <button
-          onClick={handleDashboard}
-          className="cursor-pointer border px-8 py-3 bg-black text-white font-semibold 
-          text-lg rounded-full shadow-lg hover:bg-slate-300 hover:text-black transition-colors duration-300"
-        >
-          Try Now
         </button>
       </div>
     </div>

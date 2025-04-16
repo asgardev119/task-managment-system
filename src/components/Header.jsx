@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export const Header = ({ onClick }) => {
+export const Header = () => {
   const navigate = useNavigate();
 
   const userLoggedIn = localStorage.getItem("userLoggedIn");
@@ -24,13 +24,7 @@ export const Header = ({ onClick }) => {
         </span>
       </div>
 
-      <button
-        onClick={onClick}
-        className="cursor-pointer  px-2 py-2  mr-4 border sm:px-2 sm:py-2 bg-slate-200 text-black font-semibold 
-        text-xs sm:text-sm rounded-sm shadow-lg hover:bg-black hover:text-white transition-colors duration-300"
-      >
-        Add a task
-      </button>
+      
 
       {parsedUser ? (
         <button

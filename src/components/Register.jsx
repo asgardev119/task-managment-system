@@ -5,10 +5,11 @@ function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userType, setUserType] = useState("employee"); // Default to employee
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ function Register() {
 
     setError("");
     setLoading(true);
-    const user = { name, password, email };
+    const user = { name, password, email, userType };
     localStorage.setItem("user", JSON.stringify(user));
     navigate("/login");
     
@@ -33,8 +34,6 @@ function Register() {
       setLoading(false);
       alert("Registration Successful!");
     }, 2000);
-
-
   };
 
   return (
@@ -100,6 +99,36 @@ function Register() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700">
+                Register as
+              </label>
+              <div className="mt-2 flex gap-4">
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    className="form-radio"
+                    name="userType"
+                    value="employee"
+                    checked={userType === "employee"}
+                    onChange={() => setUserType("employee")}
+                  />
+                  <span className="ml-2">Employee</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    className="form-radio"
+                    name="userType"
+                    value="lead"
+                    checked={userType === "lead"}
+                    onChange={() => setUserType("lead")}
+                  />
+                  <span className="ml-2">Lead</span>
+                </label>
+              </div>
             </div>
           </div>
 

@@ -2,7 +2,8 @@
 import { Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Dashboard from "./components/Dashboard";
+import LeadDashboard from "./components/LeadDashboard";
+import { EmployeeDashboard } from "./components/EmployeeDashboard";
 import Home from "./components/Home";
 
 function App() {
@@ -14,7 +15,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/lead-dashboard" element={<LeadDashboard />} />
+        <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
       </Routes>
     </>
   );
